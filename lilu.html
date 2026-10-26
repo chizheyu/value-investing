@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="李录哥大交流和北大演讲的精读：一张决策链大图串起方法，讲宏观的部分单独放。">
+<title>李录精读</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&display=swap">
+<style>
+/* 单栏读物，手机优先：方法用靛蓝，宏观用青灰；全页只有「卖出」一张反白，那是重点 */
+:root {
+  --paper: #F3F4F0;
+  --surface: #FAFAF7;
+  --ink: #1B2026;
+  --muted: #5B636D;
+  --rule: #D7DAD3;
+  --method: #2B4A7B;
+  --method-tint: #E4E9F2;
+  --macro: #2B635E;
+  --macro-tint: #E1ECE9;
+  --on-strong: #F6F7F3;
+  --f-display: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --f-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #121619;
+    --surface: #181D22;
+    --ink: #E2E5E8;
+    --muted: #9AA3AC;
+    --rule: #2B3239;
+    --method: #A4BBE6;
+    --method-tint: #1C2533;
+    --macro: #8DCAC0;
+    --macro-tint: #162725;
+    --on-strong: #10141A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #121619;
+  --surface: #181D22;
+  --ink: #E2E5E8;
+  --muted: #9AA3AC;
+  --rule: #2B3239;
+  --method: #A4BBE6;
+  --method-tint: #1C2533;
+  --macro: #8DCAC0;
+  --macro-tint: #162725;
+  --on-strong: #10141A;
+  color-scheme: dark;
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.8;
+  -webkit-text-size-adjust: 100%;
+}
+.wrap {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding-inline: 18px;
+  padding-block: 28px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.75rem;
+}
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.35; }
+p { margin: 0; }
+a { color: var(--method); text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--method); outline-offset: 2px; border-radius: 2px; }
+section { display: flex; flex-direction: column; }
+
+.eyebrow { font-size: .8rem; letter-spacing: .14em; color: var(--method); }
+
+/* 开头 */
+.hero { display: flex; flex-direction: column; gap: 1rem; }
+.hero h1 { font-size: clamp(2.5rem, 11vw, 3.6rem); font-weight: 900; letter-spacing: .06em; line-height: 1.15; }
+.dek { color: var(--muted); }
+.talks { list-style: none; margin: 0; padding: 0; display: grid; }
+.talks li {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .9rem;
+  padding-block: .55rem; border-top: 1px solid var(--rule);
+}
+.talks li:last-child { border-bottom: 1px solid var(--rule); }
+.talks b { font-family: var(--f-display); font-weight: 600; }
+.talks span { color: var(--muted); font-size: .9rem; font-variant-numeric: tabular-nums; min-width: 0; }
+.toc { display: flex; flex-wrap: wrap; gap: .4rem 1.25rem; font-size: .95rem; }
+
+/* 大图：六步决策链，编号是真顺序，竖线把步骤连起来 */
+.map { gap: 1rem; }
+.map h2 { font-size: clamp(1.75rem, 7vw, 2.1rem); font-weight: 900; color: var(--method); }
+.chain { list-style: none; margin: .5rem 0 0; padding: 0; counter-reset: s; display: grid; }
+.chain li {
+  counter-increment: s; position: relative;
+  display: grid; grid-template-columns: 2rem 1fr; column-gap: .75rem; row-gap: .2rem;
+  padding-bottom: 1.25rem;
+}
+.chain li > * { grid-column: 2; min-width: 0; }
+.chain li::before {
+  content: counter(s); grid-column: 1; grid-row: 1 / span 3; text-align: center;
+  font-family: var(--f-display); font-weight: 900; font-size: 1.5rem; line-height: 1.25; color: var(--method);
+  font-variant-numeric: tabular-nums;
+}
+.chain li::after {
+  content: ""; position: absolute; left: calc(1rem - 1px); top: 2.3rem; bottom: .35rem;
+  width: 2px; background: var(--rule);
+}
+.chain li:last-child::after { display: none; }
+.chain h3 { font-size: 1.1rem; font-weight: 600; }
+.chain .links { font-size: .85rem; color: var(--muted); }
+.chain .links a, .chain .links span { white-space: nowrap; }
+.chain li.gap::before { color: var(--muted); }
+.tag {
+  font-family: var(--f-body); font-weight: 400; font-size: .72rem; letter-spacing: .06em; color: var(--muted);
+  border: 1px dashed currentColor; border-radius: 4px; padding: 0 .35rem; margin-left: .5rem;
+  white-space: nowrap; vertical-align: .15em;
+}
+
+/* 两大部分的抬头 */
+.sec-head { display: flex; flex-direction: column; gap: .5rem; padding-bottom: 1.25rem; }
+.sec-head h2 { font-size: clamp(1.75rem, 7vw, 2.1rem); font-weight: 900; }
+.sec-note { color: var(--muted); font-size: .95rem; }
+.method .sec-head h2 { color: var(--method); }
+.macro .eyebrow, .macro .sec-head h2 { color: var(--macro); }
+
+/* 方法卡片 */
+.item { display: flex; flex-direction: column; gap: .85rem; padding-block: 1.5rem; border-top: 1px solid var(--rule); }
+.item-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .35rem 1rem; }
+.item-head h3 { font-size: 1.25rem; font-weight: 600; min-width: 0; }
+.lesson {
+  flex: none; font-size: .78rem; letter-spacing: .06em; color: var(--method);
+  border: 1px solid currentColor; border-radius: 999px; padding: .05rem .6rem;
+  white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.q { font-family: var(--f-display); font-weight: 600; font-size: 1.05rem; line-height: 1.7; }
+.q cite, .src {
+  font-family: var(--f-body); font-style: normal; font-weight: 400; font-size: .75rem;
+  letter-spacing: .06em; color: var(--muted); border: 1px solid var(--rule); border-radius: 4px;
+  padding: 0 .4rem; white-space: nowrap;
+}
+.q cite { margin-left: .4rem; vertical-align: .12em; }
+.ask { font-size: .95rem; color: var(--muted); }
+.ask b { display: block; color: var(--method); font-weight: 600; font-size: .8rem; letter-spacing: .12em; }
+
+.principles { list-style: none; margin: 0; padding: 0; counter-reset: p; display: grid; gap: 1rem; }
+.principles li { counter-increment: p; display: grid; grid-template-columns: 2rem 1fr; column-gap: .6rem; }
+.principles li::before {
+  content: counter(p); grid-row: span 2;
+  font-family: var(--f-display); font-weight: 900; font-size: 1.6rem; line-height: 1.15; color: var(--method);
+  font-variant-numeric: tabular-nums;
+}
+.principles p { min-width: 0; }
+.principles .by { grid-column: 2; font-size: .8rem; color: var(--muted); letter-spacing: .04em; }
+
+/* 全页唯一反白：卖出 */
+.key {
+  background: var(--method); color: var(--on-strong);
+  border-top: none; border-radius: 8px; padding: 1.5rem 1.25rem; margin-block: 1rem;
+}
+.key + .item { border-top: none; }
+.key .lesson, .key .ask, .key .ask b { color: var(--on-strong); }
+.key .q cite { color: var(--on-strong); border-color: currentColor; }
+.key .rules {
+  margin: 0; padding-left: 1.5em; display: grid; gap: .3rem;
+  font-family: var(--f-display); font-weight: 600; font-size: 1.08rem;
+}
+
+/* 宏观 */
+.group { display: flex; flex-direction: column; gap: .75rem; padding-block: 1.5rem; border-top: 1px solid var(--rule); }
+.group-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem; }
+.group-head h3 { font-size: 1.2rem; font-weight: 600; margin-right: .4rem; min-width: 0; }
+.group ul { margin: 0; padding-left: 1.2em; display: grid; gap: .65rem; }
+.group li::marker { color: var(--macro); }
+.bridge {
+  background: var(--macro-tint); border-radius: 8px; padding: 1.4rem 1.25rem; margin-top: 1rem;
+  display: flex; flex-direction: column; gap: .75rem;
+}
+.bridge h3 { font-size: 1.2rem; color: var(--macro); }
+.bridge .ask b { color: var(--macro); }
+
+/* 来源 */
+.sources { gap: 1rem; }
+.sources h2 { font-size: 1.5rem; }
+.sources dl { margin: 0; display: grid; gap: 1rem; }
+.sources dt { font-family: var(--f-display); font-weight: 600; }
+.sources dd { margin: 0; color: var(--muted); font-size: .95rem; }
+.sources dd a { white-space: nowrap; }
+.fine { font-size: .85rem; color: var(--muted); }
+.foot { font-size: .8rem; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 1rem; }
+
+/* 导出 PDF 用：纸面改白，和页边距一个颜色；卡片可以跨页，但标题不和正文分家 */
+@media print {
+  :root { --paper: #FFFFFF; }
+  .key, .bridge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  h2, .item-head, .group-head { break-after: avoid; }
+  .principles li, .chain li, .q, .ask { break-inside: avoid; }
+}
+</style>
+<style>.crumb{display:flex;justify-content:space-between;gap:1rem;font-size:.85rem}body{margin:0}*{box-sizing:border-box}</style>
+</head>
+<body>
+<main class="wrap">
+<nav class="crumb" aria-label="站内"><a href="./">价值投资自学课</a><a href="ketang.html">进课堂</a></nav>
+
+<header class="hero">
+  <p class="eyebrow">价值投资课 · 参考资料</p>
+  <h1>李录精读</h1>
+  <p class="dek">两场演讲，先用一张大图把方法串成一条决策链，再分开整理讲方法和讲宏观的部分。方法部分标了对应哪一课，每段末尾的问题课上会考；宏观部分是他的判断，不是定论。读完约 15 分钟。</p>
+  <ul class="talks">
+    <li><b>哥大交流</b><span>2026-10-05 · 哥伦比亚商学院格雷厄姆-多德年会</span></li>
+    <li><b>北大演讲</b><span>2024-12 · 光华管理学院价值投资课十周年</span></li>
+  </ul>
+  <nav class="toc" aria-label="目录">
+    <a href="#map">大图</a>
+    <a href="#method">方法精华</a>
+    <a href="#sell">卖出</a>
+    <a href="#macro">宏观部分</a>
+    <a href="#sources">来源</a>
+  </nav>
+</header>
+
+<section id="map" class="map">
+  <h2>大图：一条决策链</h2>
+  <p class="sec-note">李录的 6 条原则是一张清单，不是一套流程，挂到这条链上才成图。价值投资每做一个决定，都按顺序回答这六个问题；每一步下面是他在这两场里对这一步说了什么，点进去看。</p>
+  <ol class="chain">
+    <li>
+      <h3>为什么要拥有企业</h3>
+      <p>股票是一家企业的一部分；财富是你在全球购买力里的份额，现金会被经济增长稀释。</p>
+      <p class="links"><a href="#six">原则 1、6</a> · <a href="#players">四类人</a> · <span>第 5 课</span></p>
+    </li>
+    <li>
+      <h3>去哪里找</h3>
+      <p>到有鱼的地方钓鱼；资本挤向热门，冷门里会有被冷落的好公司。</p>
+      <p class="links"><a href="#six">原则 5</a> · <a href="#cheap">便宜有便宜的原因</a> · <span>第 7 课</span></p>
+    </li>
+    <li>
+      <h3>我看不看得懂</h3>
+      <p>能力圈先知道边界；从确实懂的开始，第一件是读得懂账本；宏观只能接受，不靠它下判断。</p>
+      <p class="links"><a href="#six">原则 4</a> · <a href="#circle">从确实懂的开始</a> · <a href="#accept">宏观只能接受</a> · <span>第 1–2、7 课</span></p>
+    </li>
+    <li class="gap">
+      <h3>生意好不好，能好多久<span class="tag">这两场的空白</span></h3>
+      <p>护城河、资本回报率、管理层怎么花钱。这两场几乎没讲，台下的人默认已经会了；这一步靠多尔西的书和巴菲特的信补。</p>
+      <p class="links">第 3–4 课</p>
+    </li>
+    <li>
+      <h3>值多少钱，价格给不给余量</h3>
+      <p>理性的投资都是给未来现金折现；市场先生只报价；安全边际为算错留余量；长期回报有个锚。</p>
+      <p class="links"><a href="#value">理性的投资</a> · <a href="#six">原则 2、3</a> · <a href="#anchor">回报的锚</a> · <a href="#safety">安全边际</a> · <span>第 5–7 课</span></p>
+    </li>
+    <li>
+      <h3>买多少，什么时候卖，怎么不出局</h3>
+      <p>三条卖出理由；不借债，扛得住跌一半；复利的前提是不亏光；你认为自己对，得是因为事实和逻辑。</p>
+      <p class="links"><a href="#sell">卖出</a> · <a href="#compound">复利的前提</a> · <a href="#nature">逆着人性来</a> · <span>第 8–10 课</span></p>
+    </li>
+  </ol>
+  <p class="ask"><b>你来画</b>第 1 课结束时，不看这张图，用自己的话把这条链讲一遍：每一步为什么排在这里，跳过它会怎么亏钱。这一版当基线；之后每过一级重画一次，考官打分。</p>
+</section>
+
+<section id="method" class="method">
+  <div class="sec-head">
+    <p class="eyebrow">第一部分</p>
+    <h2>方法精华</h2>
+    <p class="sec-note">两场演讲里讲方法的约占三分之一。每段右上角是对应的课：第 2 课资产负债表，第 5 课内在价值，第 6 课反向估值和安全边际，第 7 课估值陷阱和能力圈，第 9 课心理误判，第 10 课卖出和仓位。</p>
+  </div>
+
+  <article class="item" id="six">
+    <div class="item-head"><h3>价值投资的 6 条原则</h3><span class="lesson">第 5–7 课</span></div>
+    <ol class="principles">
+      <li><p>股票是一家企业的部分所有权，不是拿来来回倒手的纸。买股票，和买下一家公司是一回事。</p><span class="by">格雷厄姆</span></li>
+      <li><p>市场先生是神经质的，他只负责报价，「提供的是价格服务，而不是指导」。</p><span class="by">格雷厄姆 · 引自北大</span></li>
+      <li><p>未来不可预测，所以一定要留足安全边际：保护下行，让风险和回报不对称。</p><span class="by">格雷厄姆</span></li>
+      <li><p>长期回报主要由优秀的公司创造，要在能力圈里找。能力圈最要紧的是知道边界在哪，因为人总觉得自己懂得比实际多一点。</p><span class="by">巴菲特、芒格</span></li>
+      <li><p>到有鱼的地方钓鱼。关注的人多、竞争挤的地方，错误定价少；不必懂全部宏观，只要知道自己那个小池塘哪里有鱼。</p><span class="by">芒格</span></li>
+      <li><p>财富是你在全球购买力中所占的比例。现金和黄金会被经济增长稀释；办法是在最有活力的经济体里，以有利的价格买最优秀的企业，长期持有。</p><span class="by">李录</span></li>
+    </ol>
+    <p class="ask"><b>课上会考</b>股价今天比昨天低 20%，这家公司的价值变了没有？</p>
+  </article>
+
+  <article class="item" id="players">
+    <div class="item-head"><h3>市场上的四类人</h3><span class="lesson">第 5 课</span></div>
+    <p>投资者看企业能不能长期创造价值；套利者纠正错误定价，用格雷厄姆的话是从悲观者手里买、卖给乐观者；投机者猜别人下一步买什么、卖什么；经纪商和做市商提供交易服务。多数人四样都沾一点，只是比例不同。买指数，买到的就是所有人的平均。</p>
+    <p>投机按定义等不到企业把价值创造出来，整体是零和，是市场运行的成本。巴菲特的比喻是：股市像一座教堂，旁边连着一间赌场。</p>
+    <p class="q">「你是想参与一个零和游戏，还是想参与一个创造价值的游戏？」<cite>哥大</cite></p>
+    <p class="ask"><b>课上会考</b>投资者和投机者的根本区别在哪？同一个人能不能两样都占？</p>
+  </article>
+
+  <article class="item" id="value">
+    <div class="item-head"><h3>理性的投资都是价值投资</h3><span class="lesson">第 5 课</span></div>
+    <p>付出的是价格，得到的是价值，你永远想得到的比付出的多一点。价值长什么样不重要：可以是一家不增长、但持续把现金还给你的公司，可以是一家快速成长的公司，也可以是胜率低、赔率很高的一笔。数学都是同一套：在你能理解、能估得比较准的范围里，把未来的现金流折现。原则不分传统行业还是科技公司，分的是你的能力圈在哪。</p>
+    <p class="q">「所有真正理性的投资，本质上都是价值投资」<cite>哥大</cite></p>
+    <p class="ask"><b>课上会考</b>市盈率 15 一定比 30 便宜吗？</p>
+  </article>
+
+  <article class="item" id="anchor">
+    <div class="item-head"><h3>回报要有锚，故事要自洽</h3><span class="lesson">第 6 课</span></div>
+    <p>他算的账：实际 GDP 增长约 2%，加上 2%–3% 的通胀，名义增速约 4%–5%；上市公司比整体经济好一点，所以长期回报大约是高个位数。他举标普 500：2000–2010 年年化几乎为零，2010 年以来约 14%–15%，放在一起又回到高个位数（口述数字，没核过）。市场可以偏离很久、走到极端，最后还是会回来。</p>
+    <p>另一个例子是一份募资材料：一家自称「研究实验室」的公司，每年烧掉几百亿美元，说自己在做改变世界的技术，又说这项技术有大约一成的概率毁灭人类，同时请大家按两万亿美元的估值投钱。他的评语是，这几件事不可能同时为真。</p>
+    <p class="q">「投资者最终大体上还是会得到自己应得的东西」<cite>哥大</cite></p>
+    <p class="ask"><b>课上会考</b>你的估值要是隐含每年 15% 以上的回报，凭什么能比这个锚高出这么多？</p>
+  </article>
+
+  <article class="item" id="safety">
+    <div class="item-head"><h3>安全边际是怎么来的</h3><span class="lesson">第 6 课</span></div>
+    <p>格雷厄姆 1926 年开始管合伙基金，头三年也在投机，1929–1932 年基金亏掉 70%。1932–1935 年他按价值投资的办法回了本，1936 年开的新基金到 1956 年回报非凡，1949 年写出《聪明的投资者》。价值投资是在宏观最糟的年代里总结出来的。</p>
+    <p>李录 1997 年成立基金，一开始就碰上亚洲金融危机，一些主要的亚洲市场跌了七成以上，最惨的跌了九成以上，那却是他赚钱最多的一次。他说，价值投资者和多数投资者的一个重要区别，是极其重视保护下行。</p>
+    <p class="q">「价值投资者对于保护下行风险极其重视」<cite>哥大</cite></p>
+    <p class="ask"><b>课上会考</b>悲观情景下这家公司值多少？你要的买入价是多少，凭什么？</p>
+  </article>
+
+  <article class="item" id="circle">
+    <div class="item-head"><h3>从你确实懂的开始</h3><span class="lesson">第 2 课 · 第 7 课</span></div>
+    <p>他二十多岁刚开始投资时懂得很少，只能从确实懂的东西做起，比如资产负债表。他的第一只十倍股在 1994 年：一家市值 3 亿的公司，手上持有的股票资产就值 4 亿。</p>
+    <p>便宜是多维度的。格雷厄姆那时只看有形净资产；今天还要看利润的质量，是周期性的，还是可持续的。能力圈要知道边界，也要有意识地一点点往外扩。</p>
+    <p class="q">「让自己的知识不断复利，那么最终你的资本也能够复利」<cite>哥大</cite></p>
+    <p class="ask"><b>课上会考</b>为什么周期股市盈率最低的时候，往往最危险？</p>
+  </article>
+
+  <article class="item" id="cheap">
+    <div class="item-head"><h3>便宜有便宜的原因</h3><span class="lesson">第 7 课</span></div>
+    <p>资本总量有限。大量资本挤进最热门的公司，另一边就会有一批优秀企业被冷落、价格很低，这是他说今天「机会集」比平常好的理由。</p>
+    <p>他也提醒中国投资者：国家大约每十年定一组新目标，每个目标都有成本，上一个十年的目标可能变成下一个十年的成本，城市化时期的地产就是例子。</p>
+    <p class="q">「你必须知道，你现在到底是『目标』，还是『成本』」<cite>哥大</cite></p>
+    <p class="ask"><b>课上会考</b>一家公司便宜，是被错杀，还是它正是某个目标要付出的成本？怎么分？</p>
+  </article>
+
+  <article class="item" id="accept">
+    <div class="item-head"><h3>宏观只能接受，微观可以有所作为</h3><span class="lesson">第 7 课</span></div>
+    <p>北大那场他花了大半时间讲时代的困惑，原因是带着困惑和不安，很难长期拿住股票。落点是：宏观是客观存在，不因为你的愿望改变，只能按世界本来的样子接受；能作为的是在具体的公司上。心里平和，才拿得住筹码。</p>
+    <p class="q">「宏观我们只能接受，微观是我们有可能可以作为的」<cite>北大</cite></p>
+    <p class="ask"><b>课上会考</b>说说你的能力圈有哪些行业，凭什么？</p>
+  </article>
+
+  <article class="item key" id="sell">
+    <div class="item-head"><h3>卖出：全场最该精读的一段</h3><span class="lesson">第 10 课</span></div>
+    <p>北大问答里有人问：好公司被市场炒到很高，什么时候减、什么时候卖？他的三条：</p>
+    <ol class="rules">
+      <li>犯了错误，第一时间卖。</li>
+      <li>有了更好的标的，可以替换。</li>
+      <li>出现非常极端的高估。</li>
+    </ol>
+    <p>高估很大程度上是个时间概念，取决于公司长期的成长能力。能长期增长、有持续竞争力的公司，他投资 30 年也没遇到过几次，一旦找到，不要轻易丢掉筹码。</p>
+    <p>他拿比亚迪 22 年，至少七八次跌了 50% 以上，有一次跌了 80%。卖不卖，取决于你是不是真的懂这家公司的价值。他们不借债，所以扛得住个股跌一半。他还说，年轻时要从简单、最便宜的东西做起，弄明白了才能长期持有。</p>
+    <p class="q">「每一次跌法都会考验你的能力圈边界」<cite>北大</cite></p>
+    <p class="ask"><b>课上会考</b>他说高估是个时间概念。对能长期增长的公司和不增长的公司，「高估就卖」各该怎么用？</p>
+  </article>
+
+  <article class="item" id="nature">
+    <div class="item-head"><h3>逆着人性来</h3><span class="lesson">第 9 课</span></div>
+    <p>有人问：连续两年跑输市场，怎么坚持？他说问题出在人性：既想坚持长期，又想每年、每季度、每天都漂亮，最后就成了投机者。市场是来指导你的，还是来服务你的，只能选一个；真想两样都要，不如直接买指数。做这一行，你得相信自己对是因为逻辑和事实，不是因为别人同意或不同意。</p>
+    <p class="q">「做这一行最困难的一件事情，就是你必须在某种程度上逆着人性来」<cite>哥大</cite></p>
+    <p class="ask"><b>课上会考</b>一位你佩服的投资人刚买了一只股票。这条消息里，哪些是事实，哪些是你自己补上的？</p>
+  </article>
+
+  <article class="item" id="compound">
+    <div class="item-head"><h3>复利的前提</h3><span class="lesson">第 10 课</span></div>
+    <p>不要失去已经拥有的东西。不只是资本，也包括知识、信任、积累下来的智慧，甚至健康。能把这些留住、让它们继续积累，是人生里一股极强的力量。他建议尽量选双赢的事，不选零和的游戏。</p>
+    <p class="q">「复利最基本的一个前提其实就是：不要失去你已经拥有的东西」<cite>哥大</cite></p>
+    <p class="ask"><b>课上会考</b>你的规则里，哪一条是专门防一次亏光的？</p>
+  </article>
+</section>
+
+<section id="macro" class="macro">
+  <div class="sec-head">
+    <p class="eyebrow">第二部分</p>
+    <h2>宏观部分</h2>
+    <p class="sec-note">两场演讲约三分之二在讲这些，课程不考。下面按主题归拢，都是他的判断，不是定论；数字是现场口述的，没有核过。</p>
+  </div>
+
+  <div class="group">
+    <div class="group-head"><h3>AI：工具，还是「人造神」</h3><span class="src">哥大</span></div>
+    <ul>
+      <li>这一轮为什么不一样：变化速度、规模、资本集中程度和叙事都前所未有。根子在叙事变了，技术开始从「工具」一端往「造物」一端移：过了图灵测试的门槛，有了推理和编程，成了能自己干活、互相协作的智能体。</li>
+      <li>硅谷的叙事是递归式自我改进，再到 AGI、ASI，等于造出一个「人造神」；照这个逻辑，多大的投入都说得通。他调侃这是「上帝的 IPO」。</li>
+      <li>他的判断：人类不会愿意活在那样的社会里，所以要么技术走不到那一步，要么走到某个阶段大家联合起来拦住它。红线是 AI 的自我学习和工具使用，都必须有人参与。</li>
+      <li>他给的暂时定义：巨大的算力加聪明的算法，放进几乎全部人类数据，提取出「第一阶导数」，也就是海量变量之间带上下文的相关性。眼下它把知识型服务业这一层普及开，没有改变能源、交通和制造本身。</li>
+      <li>成本结构不同：互联网是一次性大投入、之后长期复用；AI 永远有增量成本，投入和收入、利润的关系始终要算，资本纪律和财务纪律会回来。所以很可能经历不止一轮大繁荣和大崩溃。</li>
+      <li>中美路径：硅谷问的是「这项技术还能做什么」，中国公司在此之外更常问「它能为我的客户做什么」。</li>
+    </ul>
+  </div>
+
+  <div class="group">
+    <div class="group-head"><h3>中国经济：双层经济</h3><span class="src">哥大</span><span class="src">北大</span></div>
+    <ul>
+      <li>十年前的选择：为了跨过中等收入陷阱，推「中国制造 2025」，把制造业从中低端往中高端迁；贸易战和技术限制之后，2021 年又加码技术自主，重点是半导体、大飞机发动机、操作系统这类卡脖子的环节。</li>
+      <li>代价落在中产家庭的资产负债表上：2021 年地产见顶时，典型中产家庭约七成净资产在自住房里，房产还带着约五成按揭；此后房价平均跌了约四成，新房年销售比高点少了约七成。家庭于是少消费、多储蓄、还债，内需增长接近零，居民存款约 165 万亿元。</li>
+      <li>另一面：制造业稳稳进入中高端。半导体成熟制程接近自主，他说美国的制裁反而送了「需求」这份礼物，有订单就有飞轮。地产少掉的规模，和每年新增的产业升级、技术自主投资大致相当，都在每年 10 万亿元左右。</li>
+      <li>结果是两层：一层居民信心弱、内需疲；一层制造业和技术变强。股市则停滞了十年，一些已经有世界级竞争力的企业以很低的价格交易。</li>
+      <li>北大那场（2024 年 12 月）列的困惑：16–24 岁青年失业率约 20%；民营企业提供约九成就业，信心受挫；中国制造业附加值占全球三成以上，自己只消费 14%–15%；政策在供给侧发力，问题却在需求侧，于是有了通缩下的「卷」。</li>
+      <li>他开的方子：真正的 KPI 是个人消费占 GDP 的比例，中国约 40%，印度 60% 多，美国 70% 以上。储蓄率在往 50% 走，靠国有银行转不成权益资本，要靠现代资本市场，也就是一整套信用体系。企业家、消费者、官员、外资、中美关系，「每一个地方都是鸡，每一个地方都是蛋」，点着哪一环都行。</li>
+      <li>香港：他说是英国留给中国的礼物，具备现代资本市场的全部内涵，却没真正用起来。他拿 1688 年荷兰的金融体系整套并入英国来类比。</li>
+    </ul>
+  </div>
+
+  <div class="group">
+    <div class="group-head"><h3>文明和金融的来历</h3><span class="src">北大</span></div>
+    <ul>
+      <li>文明有三次跃升：狩猎、农业、科技，他把科技文明叫 3.0，中国处在 2.5。经济是累进增长的，人性和治理变得慢，中间的落差带来一连串问题，中等收入陷阱是其中之一。</li>
+      <li>追赶型工业化通常只要三四十年：日本从明治维新到打败俄国，德国从统一到一战，美国从内战后到 1890 年代成为第一大经济体，南美从二战后到八九十年代。</li>
+      <li>现代金融怎么来的：威尼斯发明了复式记账、股份制、保险和银行；荷兰有了公众参与的有限责任公司（东印度公司）和交易所，也有了郁金香泡沫；英国 1688 年光荣革命，一边建立君主立宪，一边把荷兰的金融体系整套搬了过来。</li>
+      <li>观念落差的三个例子：对土地的执念，他认为是两次世界大战的心理根源；「实体经济和虚拟经济」在成熟经济里是伪概念，他举游戏玩家在战场上操纵无人机、英伟达不造晶圆；政府职能要从指挥、指导转向服务。</li>
+    </ul>
+  </div>
+
+  <div class="group">
+    <div class="group-head"><h3>世界秩序</h3><span class="src">哥大</span><span class="src">北大</span></div>
+    <ul>
+      <li>秩序分两层。政治秩序是二战后美国主导的那一套，正在转型，结局看不清；经济秩序是几百年慢慢形成的全球共同市场，冷战结束后真正成型，谁退出都要付巨大代价，所以很难散。</li>
+      <li>美国在重新算账：它承担了维持秩序的大部分军费（他说约八成），又当最后的买家和货币的提供者，开始质疑得失，并认为中国搭了顺风车。</li>
+      <li>贸易战改道，不会消失：中美直接贸易少了，和墨西哥、东南亚等地多出来的贸易大体补上了。</li>
+      <li>相互依赖反而加深。他用芯片举例：AI 最离不开芯片，而芯片制造集中在东亚，所以「战略稳定」本身就是各方的利益。</li>
+    </ul>
+  </div>
+
+  <div class="group">
+    <div class="group-head"><h3>题外话：加密货币</h3><span class="src">哥大</span></div>
+    <ul>
+      <li>「我根本不去想它」。他认为货币背后得有可以强制执行的制度，几个人凭空造出来的东西做不到这一点，是虚假的。</li>
+    </ul>
+  </div>
+
+  <aside class="bridge">
+    <h3>宏观怎么接到投资上</h3>
+    <p>他的落点还是第 6 条原则：在最有活力的经济体里，以有利的价格买最优秀、最有创造力的企业，长期持有，保住并提高自己在全球购买力里的份额。</p>
+    <p>他的判断是，今天巨大的市场分化，对保持理性的人是比平常更好的机会集，中国市场更极端一些。</p>
+    <p class="ask"><b>考官提醒</b>这是他的结论，不是你的。课上会问：「机会集更好」和「便宜有便宜的原因」，怎么同时成立？</p>
+  </aside>
+</section>
+
+<section id="sources" class="sources">
+  <h2>来源和读法</h2>
+  <dl>
+    <dt>哥大交流</dt>
+    <dd>2026 年 10 月 5 日，哥伦比亚商学院第 36 届格雷厄姆-多德年会。聪明投资者根据但斌视频号发的现场片段整理，不是官方逐字稿，有缺段；6 条原则的第 2 条是整理者用北大那场补的。<a href="https://mp.weixin.qq.com/s/Zi60fMYzfxwW9KCQXaoW0w">读原文</a></dd>
+    <dt>北大演讲</dt>
+    <dd>北京大学光华管理学院价值投资课十周年，《全球价值投资与时代》，2024 年 12 月。这里用的是虎嗅的转载稿，像语音转写，有错字。<a href="https://www.huxiu.com/article/4857656.html">虎嗅转载</a> · <a href="https://mp.weixin.qq.com/s?__biz=MzA4NTQ1MzEyNQ==&amp;mid=2663495387&amp;idx=1&amp;sn=7eabf10d01f000276e034c9fbdda860b">聪明投资者整理版</a></dd>
+    <dt>西雅图交流</dt>
+    <dd>2025 年 4 月。正文是图片，没识别出文字；讲的是中国改革和国际秩序，这里没有收。<a href="https://mp.weixin.qq.com/s?__biz=MzA4NTQ1MzEyNQ==&amp;mid=2663497814&amp;idx=1&amp;sn=5da347b87df1d7a34f5e9de9d6173703">读原文</a></dd>
+    <dt>三篇持仓新闻</dt>
+    <dd>不在这里整理，第 9 课拿来出题。</dd>
+    <dt>想读原书</dt>
+    <dd>《文明、现代化、价值投资与中国》（中信，2020）不用从头读。上篇讲现代化和中国，就是本页宏观部分的完整版；讲投资的是下篇三篇演讲：2006 年哥大《价值投资的常识与方法》、2015 年北大《价值投资在中国的展望》、2019 年北大《价值投资的知行合一》，比本页这两场讲方法讲得更集中。上到对应的课，再读对应那篇。</dd>
+  </dl>
+  <p class="fine">引文只摘短句，标了出自哪一场。演讲里的数字都是他口述的，课上要用，先找一手数据核。</p>
+</section>
+
+<footer class="foot">整理：价值投资课考官 · 2026-10-11</footer>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>价值投资自学课</title>
+<meta name="description" content="一次一题的价值投资自学课：先读两分钟讲解，再用自己的话答，让你自己的 AI 当考官批改。附李录两场演讲的精读。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&display=swap">
+<style>
+/* 入口页：一句话说清这是什么、怎么学，下面两张卡片通往课堂和李录精读；左侧的五级阶梯是这门课的骨架 */
+:root {
+  --paper: #F3F4F0; --surface: #FBFBF8; --ink: #1B2026; --muted: #5B636D; --rule: #D7DAD3;
+  --method: #2B4A7B; --method-tint: #E4E9F2; --macro: #2B635E; --on-strong: #F6F7F3;
+  --f-display: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --f-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --paper: #121619; --surface: #181D22; --ink: #E2E5E8; --muted: #9AA3AC; --rule: #2C333B; --method: #A4BBE6; --method-tint: #1C2533; --macro: #8DCAC0; --on-strong: #10141A; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --paper: #121619; --surface: #181D22; --ink: #E2E5E8; --muted: #9AA3AC; --rule: #2C333B; --method: #A4BBE6; --method-tint: #1C2533; --macro: #8DCAC0; --on-strong: #10141A; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 17px; line-height: 1.8; -webkit-text-size-adjust: 100%; }
+.wrap { max-width: 42rem; margin: 0 auto; padding-inline: 18px; padding-block: max(32px, env(safe-area-inset-top)) 64px; display: flex; flex-direction: column; gap: 2.5rem; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.3; }
+p { margin: 0; }
+a { color: var(--method); text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--method); outline-offset: 3px; }
+.hero { display: flex; flex-direction: column; gap: 1rem; }
+.eyebrow { font-size: .8rem; letter-spacing: .14em; color: var(--method); }
+.hero h1 { font-size: clamp(2.4rem, 11vw, 3.4rem); font-weight: 900; letter-spacing: .04em; }
+.dek { color: var(--muted); }
+.doors { display: grid; gap: 1rem; }
+@media (min-width: 40rem) { .doors { grid-template-columns: 1fr 1fr; } }
+.door { display: flex; flex-direction: column; gap: .6rem; padding: 1.3rem 1.2rem; border-radius: 10px; text-decoration: none; color: inherit; border: 1px solid var(--rule); background: var(--surface); min-width: 0; }
+.door.main { background: var(--method); border-color: var(--method); color: var(--on-strong); }
+.door h2 { font-size: 1.35rem; }
+.door p { font-size: .95rem; }
+.door .go { margin-top: auto; font-size: .9rem; font-weight: 600; }
+.door.main p, .door.main .go { color: var(--on-strong); }
+.door:not(.main) p { color: var(--muted); }
+section { display: flex; flex-direction: column; gap: 1rem; }
+section > h2 { font-size: 1.45rem; }
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 1rem; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 2rem 1fr; column-gap: .75rem; }
+.steps li::before { content: counter(s); grid-row: span 2; font-family: var(--f-display); font-weight: 900; font-size: 1.45rem; line-height: 1.3; color: var(--method); text-align: center; }
+.steps b { font-family: var(--f-display); font-weight: 600; }
+.steps span { color: var(--muted); font-size: .95rem; grid-column: 2; }
+.how { margin: 0; padding-left: 1.2em; display: grid; gap: .5rem; }
+.note { font-size: .88rem; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 1rem; display: grid; gap: .5rem; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="hero">
+    <p class="eyebrow">一门用 AI 当考官的自学课</p>
+    <h1>价值投资自学课</h1>
+    <p class="dek">市面上讲价值投资的资料多如牛毛，读完常常只留下几个词。这门课换个顺序：每题先读两分钟讲解，再用自己的话答，答完让 AI 当考官打分、挑漏洞，答错的题隔几天再考。词会用了，才算学会。</p>
+  </header>
+
+  <div class="doors">
+    <a class="door main" href="ketang.html">
+      <h2>进课堂</h2>
+      <p>第 1 课「赚钱不等于有钱」：利润表和现金流量表为什么对不上。第 1.5 课：学习期先定好仓位护栏，顺带把凯利公式讲清楚。</p>
+      <span class="go">从第 1 题开始</span>
+    </a>
+    <a class="door" href="lilu.html">
+      <h2>李录精读</h2>
+      <p>李录哥大交流和北大演讲的整理：一张决策链大图串起他讲的方法，讲宏观的部分单独放。</p>
+      <span class="go">读精读</span>
+    </a>
+  </div>
+
+  <section>
+    <h2>五级阶梯</h2>
+    <ol class="steps">
+      <li><b>读懂三张表</b><span>利润、家底、现金各说明什么，哪里对不上要追问</span></li>
+      <li><b>判断生意好坏</b><span>资本回报率、护城河，用数字验证</span></li>
+      <li><b>会估值</b><span>内在价值、现价隐含了什么、安全边际</span></li>
+      <li><b>写一页投资备忘录</b><span>论点能被证伪，买之前写好卖出条件</span></li>
+      <li><b>定自己的买卖规则</b><span>仓位、卖出、决策日志</span></li>
+    </ol>
+    <p class="dek">一共 10 节课。现在开放第 1 课和第 1.5 课，后面的做好一节上线一节。</p>
+  </section>
+
+  <section>
+    <h2>怎么用</h2>
+    <ol class="how">
+      <li>打开课堂，先读讲解，再在框里用自己的话答。别查资料，答错了才知道哪里不懂。</li>
+      <li>点「复制考官提示词」，粘到你常用的 AI 里（ChatGPT、Claude、豆包、DeepSeek、Kimi 都行），它会打分、说你漏了什么，还会追问你。不想用 AI，也可以打开评分要点自己打分。</li>
+      <li>把分数记回页面。7 分算过；没过的题和每课的自测题排进复习，隔 1、3、7、21 天再考。</li>
+      <li>想让 AI 从头带你上一整节课，课堂顶上有一段整节课的考官提示词，复制过去就能开始。</li>
+    </ol>
+  </section>
+
+  <footer class="note">
+    <p>这里只讲方法，不推荐任何股票，也不构成投资建议。</p>
+    <p>你的回答和进度只存在你自己手机或电脑的浏览器里，不上传、不收集。在微信里打开也能用；想长期用，建议用手机浏览器打开，记录更稳。</p>
+  </footer>
+</main>
+</body>
+</html>

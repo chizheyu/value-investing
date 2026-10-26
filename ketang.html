@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>价值投资课堂</title>
+<meta name="description" content="一次一题的价值投资自学课：先读两分钟讲解，再用自己的话答，拿评分要点自己打分，或者复制考官提示词让你自己的 AI 批改。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&display=swap">
+<style>
+/* 公开版答题卡：一次只露一道题；批改交给读者自己的 AI 或评分要点自查，记录只存在读者自己的浏览器里 */
+:root {
+  --paper: #F3F4F0; --surface: #FBFBF8; --field: #FFFFFF; --ink: #1B2026; --muted: #5B636D; --rule: #D7DAD3;
+  --method: #2B4A7B; --method-tint: #E4E9F2; --ok: #2F6B45; --ok-tint: #E1EEE5; --warn: #99561A; --warn-tint: #F5E9DB;
+  --on-strong: #F6F7F3;
+  --f-display: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --f-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #121619; --surface: #181D22; --field: #1D232A; --ink: #E2E5E8; --muted: #9AA3AC; --rule: #2C333B;
+    --method: #A4BBE6; --method-tint: #1C2533; --ok: #8CCBA2; --ok-tint: #16281D; --warn: #E3AA6B; --warn-tint: #2D2216;
+    --on-strong: #10141A; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #121619; --surface: #181D22; --field: #1D232A; --ink: #E2E5E8; --muted: #9AA3AC; --rule: #2C333B;
+  --method: #A4BBE6; --method-tint: #1C2533; --ok: #8CCBA2; --ok-tint: #16281D; --warn: #E3AA6B; --warn-tint: #2D2216;
+  --on-strong: #10141A; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 17px; line-height: 1.75; -webkit-text-size-adjust: 100%; }
+.wrap { max-width: 40rem; margin: 0 auto; padding-inline: 16px; padding-block: max(20px, env(safe-area-inset-top)) 56px; display: flex; flex-direction: column; gap: 1.25rem; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.35; }
+p { margin: 0; }
+a { color: var(--method); text-underline-offset: 3px; }
+button { font: inherit; cursor: pointer; }
+button:focus-visible, textarea:focus-visible, summary:focus-visible, a:focus-visible { outline: 2px solid var(--method); outline-offset: 2px; }
+
+.top { display: flex; flex-direction: column; gap: .6rem; }
+.crumb { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; font-size: .82rem; }
+.eyebrow { font-size: .78rem; letter-spacing: .14em; color: var(--method); }
+.tabs { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.tab { appearance: none; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); border-radius: 999px; padding: .3rem .85rem; min-height: 2.4rem; font-size: .92rem; display: inline-flex; gap: .45rem; align-items: center; }
+.tab small { font-size: .74rem; color: var(--muted); }
+.tab.on { border-color: var(--method); color: var(--method); box-shadow: inset 0 0 0 1px var(--method); }
+.due { font-size: .8rem; color: var(--warn); border: 1px dashed currentColor; border-radius: 999px; padding: .15rem .65rem; }
+
+.lesson-head { display: flex; flex-direction: column; gap: .5rem; }
+.lesson-head h1 { font-weight: 900; font-size: clamp(1.9rem, 8vw, 2.5rem); line-height: 1.2; }
+.lead { color: var(--muted); }
+.dots { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .35rem; }
+.dot { appearance: none; min-width: 2.25rem; height: 2.25rem; border-radius: 999px; padding: 0 .5rem; border: 1.5px solid var(--rule); background: transparent; color: var(--muted); font-size: .85rem; font-variant-numeric: tabular-nums; display: inline-grid; place-items: center; }
+.dot.pass { background: var(--ok); border-color: var(--ok); color: var(--on-strong); }
+.dot.fail { background: var(--warn); border-color: var(--warn); color: var(--on-strong); }
+.dot.pending { border-color: var(--warn); color: var(--warn); }
+.dot.cur { outline: 2px solid var(--method); outline-offset: 2px; }
+
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 1.2rem 1.05rem; display: flex; flex-direction: column; gap: .9rem; min-width: 0; }
+.card-head { display: flex; flex-wrap: wrap; gap: .5rem; align-items: baseline; justify-content: space-between; }
+.qno { font-size: .8rem; letter-spacing: .08em; color: var(--method); }
+.chip { font-size: .72rem; color: var(--muted); border: 1px solid var(--rule); border-radius: 4px; padding: 0 .4rem; white-space: nowrap; }
+.qtitle { font-weight: 600; font-size: 1.3rem; }
+.qtext { font-size: 1.05rem; white-space: pre-wrap; }
+textarea { display: block; width: 100%; min-height: 8rem; resize: vertical; font: inherit; font-size: 16px; line-height: 1.7; color: var(--ink); background: var(--field); border: 1px solid var(--rule); border-radius: 8px; padding: .7rem .8rem; }
+textarea.short { min-height: 4.5rem; }
+textarea.prompt { min-height: 9rem; font-size: 14px; color: var(--muted); }
+.row { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+.btn { appearance: none; min-height: 2.75rem; padding: 0 1.1rem; border-radius: 8px; border: 1px solid var(--rule); background: transparent; color: var(--ink); font-size: .95rem; }
+.btn.primary { background: var(--method); border-color: var(--method); color: var(--on-strong); font-weight: 600; }
+.btn.small { min-height: 2.4rem; padding: 0 .8rem; font-size: .88rem; }
+.hint { font-size: .85rem; color: var(--muted); }
+.msg { font-size: .9rem; color: var(--warn); }
+.ok-msg { font-size: .9rem; color: var(--ok); }
+
+.panel { border-top: 1px solid var(--rule); padding-top: .9rem; display: flex; flex-direction: column; gap: .7rem; }
+.panel h3 { font-size: 1.02rem; }
+.key { background: var(--method-tint); border-radius: 8px; padding: .75rem .85rem; display: flex; flex-direction: column; gap: .5rem; }
+.key dt { font-size: .76rem; letter-spacing: .12em; color: var(--muted); }
+.key dd { margin: 0; }
+.scores { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+.scores .btn { min-height: 3.2rem; display: flex; flex-direction: column; justify-content: center; line-height: 1.3; }
+.scores .btn b { font-variant-numeric: tabular-nums; }
+.scores .btn span { font-size: .78rem; color: var(--muted); }
+.grade { display: flex; align-items: baseline; flex-wrap: wrap; gap: .55rem; }
+.grade .score { font-family: var(--f-display); font-weight: 900; font-size: 2.4rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.grade .verdict { font-size: .82rem; padding: .05rem .55rem; border-radius: 999px; }
+.grade.pass .score { color: var(--ok); }
+.grade.pass .verdict { background: var(--ok-tint); color: var(--ok); }
+.grade.fail .score { color: var(--warn); }
+.grade.fail .verdict { background: var(--warn-tint); color: var(--warn); }
+.mine summary { cursor: pointer; color: var(--muted); font-size: .9rem; }
+.mine p { white-space: pre-wrap; margin-top: .4rem; color: var(--muted); }
+
+.summary { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.summary li { display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--rule); padding-block: .35rem; }
+.summary b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.field-label { font-size: .92rem; font-weight: 600; }
+.cheat { display: flex; flex-direction: column; gap: .8rem; }
+.cheat h2 { font-size: 1.35rem; }
+.cheat h3 { font-size: 1.02rem; margin-top: .3rem; }
+.cheat ul, .cheat ol { margin: 0; padding-left: 1.2em; display: grid; gap: .3rem; }
+.one { font-family: var(--f-display); font-weight: 600; font-size: 1.08rem; }
+.foot { font-size: .8rem; color: var(--muted); border-top: 1px solid var(--rule); padding-top: .9rem; display: flex; flex-direction: column; gap: .4rem; }
+.linkish { appearance: none; border: 0; background: none; color: var(--muted); text-decoration: underline; padding: 0; font-size: .8rem; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <div class="crumb"><a href="./">价值投资自学课</a><a href="lilu.html">李录精读</a></div>
+    <p class="eyebrow">课堂 · 一次一题，你来答</p>
+    <nav class="tabs" id="tabs" aria-label="课程"></nav>
+  </header>
+  <div id="stage"></div>
+  <footer class="foot">
+    <p>每题先读两分钟讲解，再用自己的话答。批改有两种：复制考官提示词，让你自己常用的 AI（ChatGPT、Claude、豆包、DeepSeek、Kimi 都行）来批；或者打开评分要点自己打分。7 分算过，没过的题和每课的自测题会排进复习，隔 1、3、7、21 天再考。</p>
+    <p>你的回答和进度只存在这台设备的浏览器里，不上传到任何地方。换手机或清浏览器数据就没了。<button class="linkish" data-act="reset">清空我的记录</button></p>
+  </footer>
+</main>
+
+<script>
+(() => {
+"use strict";
+const GAPS = [1, 3, 7, 21], PASS = 7, MAX_REVIEW_PER_DAY = 5;
+
+const LESSONS = [
+  {
+    id: "L1", num: 1, tag: "1 级 · 读懂三张表", title: "赚钱不等于有钱",
+    lead: "买股票是买一门生意的一小块，读财报就是看这门生意的账本。这一课讲利润表和现金流量表为什么对不上，这是读财报的第一道门。每题先读两分钟讲解，再用自己的话答；讲解很短，答题和被挑错才是学的主体。",
+    passAvg: 7, bigPicture: true,
+    questions: [
+      { id: "L1-Q1", primer: { t: "两张表，两本账", p: ["利润表回答「这一年赚没赚」。它按「该算到这一年的」来记：东西卖出去了就算收入，哪怕钱还没收到；这一年用掉的东西才算成本，哪怕钱是去年付的、明年才付。会计上叫权责发生制。", "现金流量表回答「钱实际进没进口袋」。它只认真金白银的进出：收到了才算进，付出去了才算出。", "所以两本账常常对不上。举个和奶茶店无关的例子：一家装修公司 12 月完工，客户说明年 2 月付款。这笔收入算在今年的利润里，可今年银行里一分钱没进。", "记住一句：利润是「应该赚了多少」，现金是「实际到手多少」。下一题就用这句话去想：一家店明明赚了钱，钱会去哪？"] }, kind: "情景", title: "奶茶店",
+        text: "一家奶茶店今年账面利润 30 万，可年底一看，银行里的钱反而比年初少了 10 万。钱去哪了？能想到几种可能就说几种。先别查资料，用自己的话答。",
+        key: "答出至少 3 种、分属不同类别的原因 → 7 分起；经营、投资、筹资三栏都覆盖 → 9–10 分。经营：钱没收回来（应收、外卖平台结算慢）、压在货上（存货）、预付了房租、还了以前欠的货款（应付减少）；投资：买设备、装修、开新店；筹资：还借款本金、老板分红或取钱。点出「利润按权责发生制记、现金按实际收付记」这个根，加 1 分（满分封顶 10）。",
+        errors: "答「被偷了 / 算错了」，不在账的逻辑上；把还利息和还本金混在一起（利息进利润表，本金不进）；以为折旧会让现金比利润少（正好反了）。" },
+      { id: "L1-Q2", primer: { t: "现金流量表的三栏", p: ["现金流量表把所有进出的钱分成三栏。", "经营活动：做生意本身带来的进出。卖货收的钱、付给供应商的货款、发的工资、交的房租，都在这一栏。", "投资活动：为以后做生意花的长期的钱。买设备、装修、开新店；卖掉旧设备收回来的钱也算这一栏。", "筹资活动：和出钱的人之间的往来。借钱进来、还贷款本金、股东投钱进来、给股东分红。借款的利息算费用，进利润表；本金不是费用，只在筹资栏。", "判断口诀：跟日常买卖有关的进经营，跟长期家当有关的进投资，跟债主和股东有关的进筹资。"] }, kind: "归栏", title: "放进三栏",
+        text: "把你刚才说的每种可能，放进现金流量表的三栏：经营活动、投资活动、筹资活动。上一题没想到的，也可以在这里补。",
+        key: "应收、存货、预付、应付 → 经营；设备、装修、开新店 → 投资；还本金、分红、股东投钱或取钱 → 筹资。全部归对 9–10；错一两个 7–8；把投资或筹资的事放进经营又说不出理由，扣分。",
+        errors: "把买设备当成经营；把还本金当成经营；分不清老板取钱和发工资。",
+        note: "这题要结合他第 1 题说过的那几种可能来判。" },
+      { id: "L1-Q3", hint: "这题不用新知识，用前两段讲解推一推。", kind: "反过来", title: "利润为零，钱却多了",
+        text: "另一家店账面利润是 0，银行里的钱却多了 50 万。可能吗？说两种情况。",
+        key: "可能。折旧摊销大（利润里扣了，现金没出去）；卖储值卡、会员卡（预收）；拖着供应商的钱（应付增加）；借了钱；卖了设备；股东注资。至少 2 种对、其中至少 1 种是经营性的（折旧、预收或应付）才能 7 分以上；只说借钱、注资这类筹资原因最多 6 分。",
+        errors: "说「不可能」；只想到借钱。" },
+      { id: "L1-Q4", primer: { t: "折旧", p: ["买一台能用好几年的设备，钱是一次付出去的，可它在好几年里都在帮你赚钱。要是买的那年把钱全算成本，那一年利润难看得离谱，后几年又好看得离谱。", "所以会计把这笔钱摊到用得上的那几年，每年扣一份，叫折旧。比如花 3 万买一台咖啡机，能用 3 年，利润表每年扣 1 万。", "资产负债表上，这台设备按「买价减去已经扣掉的折旧」记。", "下一题要你把这三件事接起来：现金哪一刻出去、利润每年扣多少、资产负债表上还剩多少。"] }, kind: "折旧", title: "一台制冰机",
+        text: "年初花 10 万买了一台制冰机，能用 5 年。为什么今年利润表只扣 2 万？那 10 万现金在哪张表、哪一栏一次性出现？年底这台机器在资产负债表上还记多少？",
+        key: "折旧是把一次性花的钱摊到受益的 5 年，所以每年扣 2 万；10 万在现金流量表的投资活动一次性流出；年底资产负债表上这台机器还剩 8 万（原值 10 万减累计折旧 2 万）。三点都对满分，每漏一点扣 3 分。",
+        errors: "以为 10 万进了经营现金流；以为每年还要再花 2 万现金。" },
+      { id: "L1-Q5", primer: { t: "自由现金流", p: ["经营现金流是做生意本身带进来的钱。可生意要维持、要长大，就得不断花钱买设备、开新店，这笔钱叫资本开支。", "自由现金流（入门版）= 经营现金流 − 资本开支。剩下这部分，是股东拿走了也不伤生意的钱。", "巴菲特 1986 年致股东信里有个相近的概念，叫「所有者收益」，他把它看得比会计上的净利润更重。", "为什么它比净利润更靠得住？这一题你来说。"] }, kind: "费曼", title: "自由现金流",
+        text: "用你自己的话说：什么是自由现金流？为什么巴菲特更看重它，而不是净利润？",
+        key: "经营现金流减去维持和扩张生意必须花的资本开支，是股东能拿走又不伤生意的钱；净利润没扣资本开支，还受会计选择影响，可以好看但拿不出钱；巴菲特 1986 年信里叫「所有者收益」（说不出名字不扣分）。定义对 4 分，为什么比净利润重要说清 4 分，例子或直觉 2 分。",
+        errors: "把自由现金流说成「公司账上的现金」；说不出资本开支这一项。" },
+      { id: "L1-Q6", primer: { t: "应收账款", p: ["应收账款是货已经卖出去、钱还没收回来的那部分。它在利润表上已经算成收入了，现金却还没进来。", "正常的生意里，营收涨多少，应收大致跟着涨多少。下一题看的是两者涨得不一样的时候。"] }, kind: "选做", title: "红旗", optional: true,
+        text: "一家公司营收涨了 30%，应收账款涨了 80%，经营现金流反而下降。你的第一反应是什么？还要查什么？",
+        key: "可能在放宽赊销冲营收，收入质量在变差，或者提前确认了收入；要查应收账龄、坏账准备、大客户集中度、近几年经营现金流 ÷ 净利润的走势。说出「收入质量变差」并列出 2 项以上要查的 → 7 分起。",
+        errors: "只说「生意变好了」；只说「要卖」而说不出查什么。" }
+    ],
+    cheat: {
+      one: "利润表回答「这段时间赚没赚」，现金流量表回答「钱实际进没进口袋」。两者对不上，根子在利润按权责发生制记、现金按实际收付记。",
+      concepts: [
+        "三张表：利润表是一段时间赚没赚；资产负债表是此刻有什么、欠什么、剩多少归股东；现金流量表是钱从哪来、到哪去",
+        "现金流量表三栏：经营（卖货收钱、付货款、发工资）、投资（买设备、开新店、卖资产）、筹资（借钱还钱、股东投钱、分红）",
+        "利润含金量 = 经营现金流 ÷ 净利润，长期低于 1 就要追问",
+        "自由现金流（入门版）= 经营现金流 − 资本开支，是股东拿走也不伤生意的钱",
+        "折旧：钱在买的那年从投资栏一次花出去，利润分到用得上的年份慢慢扣"
+      ],
+      mistakes: [
+        "以为折旧让现金变少：折旧只在利润表里扣，现金早在买的那年就出去了",
+        "把还本金当费用：利息进利润表，本金只走筹资栏",
+        "营收涨了就叫好：应收和存货涨得比营收快，收入质量可能在变差"
+      ],
+      checklist: [
+        "经营现金流 ÷ 净利润，看连续几年，不看一年",
+        "应收、存货的增速和营收的增速比一比",
+        "资本开支吃掉了经营现金流的几成",
+        "利润里有没有卖资产之类的一次性收益"
+      ]
+    },
+    selftest: [
+      { id: "L1-S1", q: "一家公司净利润 1 亿，经营现金流只有 3000 万。说出三种可能的原因，各归到现金流量表哪一栏。",
+        key: "应收增加、存货增加、预付增加、应付减少等经营栏原因，任意三种且归栏正确 → 7 分起；能指出利润里的一次性收益（比如卖资产赚的钱不进经营现金流）加分。" },
+      { id: "L1-S2", q: "公司今年卖掉一栋楼赚了 5000 万，净利润因此大涨。卖楼收到的钱出现在现金流量表哪一栏？这样的利润该怎么看？",
+        key: "卖楼收到的现金在投资活动流入，不在经营现金流；这是一次性收益，不能年年有，看利润质量时要剔除。两点都对满分。" },
+      { id: "L1-S3", q: "「折旧让公司的现金变少了」，这句话错在哪？",
+        key: "折旧不花现金；现金在买资产那年已经从投资栏一次流出；折旧只是把成本分摊进以后各年的利润，所以经营现金流通常比净利润高出折旧那部分。" },
+      { id: "L1-S4", q: "自由现金流的入门算法是什么？为什么股东更该看它，而不是净利润？",
+        key: "经营现金流减资本开支；是维持和扩张生意之后股东能拿走的钱；净利润没扣资本开支，还受会计选择影响（巴菲特叫所有者收益）。" },
+      { id: "L1-S5", q: "一家公司营收涨了 20%，应收账款涨了 60%。第一反应是什么？还要查什么？",
+        key: "收入质量可能变差：放宽赊销冲营收，或者提前确认收入；查应收账龄、坏账准备、大客户集中度、经营现金流 ÷ 净利润的走势。" }
+    ]
+  },
+  {
+    id: "L1.5", num: 1.5, after: "L1", tag: "学习期的护栏", title: "先定护栏，再谈仓位",
+    lead: "仓位规则有一半不需要会估值，现在就能定，而且正对着「看到机会就全仓冲」。安全边际和凯利公式要用估值的结果，留到后面。这节约 30 分钟。",
+    passAvg: 7, mustPass: ["L1.5-Q4"],
+    questions: [
+      { id: "L1.5-Q1", primer: { t: "凯利公式一页", p: ["凯利公式回答一个问题：每次该押本钱的多大比例，长期下来本钱涨得最快。", "最简单的版本：f = p − (1−p) ÷ b。p 是赢的概率，b 是赢了能赚本金的几倍。比如一枚不公平的硬币，正面概率 55%，一赔一：f = 0.55 − 0.45 = 10%，每次押本钱的一成。", "它追求的是长期复合增长最快，不是单次赚最多。押得太少，涨得慢；押得太多，一次大亏要很久才回得来。", "答题时多想一步：抛硬币的 p 和 b 是已知的，买股票的时候，这两个数谁告诉你？"] }, kind: "费曼", title: "凯利公式算的是什么",
+        text: "用你自己的话说凯利公式算的是什么。两个输入是什么？在股票投资里，谁给你这两个数？",
+        key: "算的是每次下注占资金的比例，让长期复合增长最快；f = p − (1−p)/b，p 是胜率，b 是赔率（赢时赚本金的几倍）；股市里没人给 p 和 b，只能来自自己的估值，估不出来就无从算起。三点各约 3 分；点明是「长期复合增长最快」而不是「单次赚最多」加 1 分。",
+        errors: "以为凯利让单次赚最多；把「我很有把握」当成胜率；不知道输入从哪来。" },
+      { id: "L1.5-Q2", primer: { t: "为什么不能只看平均", p: ["本钱是一次次乘下去的，不是加起来的。涨 50% 再跌 50%，不是回到原点：1 × 1.5 × 0.5 = 0.75，少了四分之一。", "所以判断一种押法长期赚不赚，要看「赢一次、输一次之后剩多少」，不能看「平均每次赚几个百分点」。", "下一题就用这个办法算一算。"] }, kind: "情景", title: "胜率估高了",
+        text: "你以为胜率六成、一赔一，凯利让你每次下两成。可真实胜率只有五成。一直这么下，长期会怎样？为什么？",
+        key: "长期稳定亏。赢一次资金乘 1.2，输一次乘 0.8，一赢一输后只剩 0.96（每次对数期望约 −2%）；真实优势为零时凯利是零。结论：输入估高的代价远大于估低。说出「长期会亏」并给出一赢一输 0.96 或对数期望的理由 → 8 分起；只说「会亏」没有理由最多 5 分。",
+        errors: "以为五五开就不赚不赔；只算算术平均（+20% 和 −20% 平均为零）。" },
+      { id: "L1.5-Q3", hint: "这题不用新知识，用前两段讲解推一推。", kind: "为什么", title: "为什么只下半凯利",
+        text: "连会算凯利的职业玩家，也大多只下半凯利或更少。为什么？",
+        key: "胜率和赔率是估出来的，估高的代价远大于估低，打折是给估错留余量；满凯利波动极大，资金在某个时候腰斩的概率约一半，半凯利约八分之一；而半凯利的长期增长率还有满凯利的约四分之三。说出「给估错留余量」和「回撤太大扛不住」两点 → 8 分起。",
+        errors: "只说「为了保守」，说不出少赚多少、少担多少风险。" },
+      { id: "L1.5-Q4", primer: { t: "护栏和规则", p: ["风险规则分两种。一种不用会估值也能执行：单只股票最多放多少、分几批买、加不加杠杆、学习这段时间个股最多占总资金多少、买之前写不写理由。另一种要靠估值：低于内在价值多少才买、按把握大小定仓位。", "第二种你现在还用不了，第一种现在就能定，这一题写的就是它。", "「控制风险」「不追高」是口号，到时候没法照着做；「单只不超过 X%」「如果连亏两笔就停一个月」才是规则。数字你自己定，考官只问每条防的是哪种亏法。"] }, kind: "写规则", title: "写下你的护栏",
+        text: "写下你学习这段时间的 3–5 条护栏。每条写成具体数字，或者「如果……就……」，再写一句它防的是哪种亏法。可以从这几样想：单只最多放多少、分几批买、加不加杠杆、个股最多占总资金多少、买之前写不写理由。数字你自己定。",
+        key: "每条具体可执行（有数字或「如果……就……」）；每条说得出防哪种亏法；没有一条依赖他现在还不会的估值（比如「低于内在价值才买」在学习期执行不了）；至少 3 条。全部满足 9–10；有一条执行不了或依赖估值扣 2 分；说不出防什么的每条扣 1 分。",
+        errors: "写成口号（「控制风险」「不追高」）；依赖估值（「便宜时多买」）；没有数字。",
+        note: "这题是他自己的规则：不要替他定数字，不评论数字大小合不合适（那是他的选择），不给买卖建议。只查：是否具体可执行、是否说了防哪种亏法、有没有偷偷依赖估值、条与条之间有没有矛盾。他如果写了自己的持仓或金额，不要复述。" }
+    ],
+    cheat: {
+      one: "仓位规则分两半：不靠估值的护栏现在就定；靠估值的安全边际和凯利，等会估值了再用。",
+      concepts: [
+        "凯利：f = p − (1−p)/b，让长期复合增长最快的下注比例；p 和 b 在股市里只能来自自己的估值",
+        "估高比估低危险：以为六成、其实五成，按两成下注，每次对数期望约 −2%，长期稳亏",
+        "半凯利：长期增长率剩约四分之三，资金腰斩的概率从约一半降到约八分之一",
+        "没证明过自己有优势，凯利的答案就是零或很小"
+      ],
+      mistakes: [
+        "拿猜的胜率代进公式，把算出来的小数当真",
+        "按满凯利下注",
+        "把「我很有把握」当成胜率"
+      ],
+      checklist: [
+        "每条护栏说得出防的是哪种亏法",
+        "没有一条依赖你现在还不会的估值",
+        "每条写成数字或「如果……就……」，到时候不用临场判断"
+      ]
+    },
+    selftest: [
+      { id: "L1.5-S1", q: "凯利公式的两个输入是什么？在股票投资里它们从哪来？",
+        key: "胜率 p 和赔率 b；只能来自自己的估值；估不出来就算不了，没有优势时凯利是零。" },
+      { id: "L1.5-S2", q: "胜率估成六成、实际只有五成，按凯利的两成下注，长期为什么会亏？",
+        key: "一赢一输资金变成 1.2 × 0.8 = 0.96，每次对数期望约 −2%；没有优势却按有优势下注，越下越少。" },
+      { id: "L1.5-S3", q: "半凯利比满凯利少赚多少、少担多少风险？",
+        key: "长期增长率约为满凯利的四分之三；资金在某个时候腰斩的概率从约一半降到约八分之一。" }
+    ]
+  }
+];
+
+
+const BYID = {};
+LESSONS.forEach(L => L.questions.forEach((q, i) => { q.order = i; q.L = L; BYID[q.id] = q; }));
+const lessonOf = id => LESSONS.find(L => L.id === id);
+
+const KEY = "vi-public-v1";
+const blank = () => ({ attempts: {}, review: {}, done: {}, notes: {}, read: {}, drafts: {} });
+let D = blank();
+try { const o = JSON.parse(localStorage.getItem(KEY) || "null"); if (o) D = Object.assign(blank(), o); } catch (e) {}
+let saveTimer = null;
+function save(now) {
+  clearTimeout(saveTimer);
+  const run = () => { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {} };
+  if (now) run(); else saveTimer = setTimeout(run, 300);
+}
+const V = { lessonId: "L1", pick: null, revising: {}, copied: {}, showPrompt: {}, rvShown: null, msg: {} };
+const hashLesson = (location.hash || "").replace("#", "");
+if (lessonOf(hashLesson)) V.lessonId = hashLesson;
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const pad = n => String(n).padStart(2, "0");
+const fmt = d => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+const today = () => fmt(new Date());
+const addDays = (iso, n) => { const [y, m, d] = iso.split("-").map(Number); return fmt(new Date(y, m - 1, d + n)); };
+
+const att = id => D.attempts[id] || null;
+const lastAnswer = id => { const a = att(id); return a && a.answers && a.answers.length ? a.answers[a.answers.length - 1] : null; };
+const firstScore = id => { const a = att(id); const g = a && a.answers ? a.answers.filter(x => typeof x.score === "number") : []; return g.length ? g[0].score : null; };
+function qStatus(q) { const la = lastAnswer(q.id); if (!la) return "todo"; return typeof la.score === "number" ? "graded" : "pending"; }
+const isDone = q => firstScore(q.id) !== null || !!(q.optional && att(q.id) && att(q.id).skipped);
+const lessonDone = L => !!D.done[L.id];
+const unlocked = L => !L.after || lessonDone(lessonOf(L.after));
+const nextIndex = L => { const i = L.questions.findIndex(q => !isDone(q)); return i < 0 ? "close" : i; };
+function summaryOf(L) {
+  const req = L.questions.filter(q => !q.optional);
+  const scored = req.filter(q => firstScore(q.id) !== null);
+  const avg = scored.length ? scored.reduce((s, q) => s + firstScore(q.id), 0) / scored.length : null;
+  let passed = avg !== null && avg >= L.passAvg;
+  if (L.mustPass) passed = passed && L.mustPass.every(id => (firstScore(id) ?? 0) >= PASS);
+  return { req, avg, passed };
+}
+const reviewedToday = () => Object.values(D.review).filter(r => (r.记录 || []).some(x => x.日期 === today())).length;
+function reviewQueue() {
+  const t = today();
+  const due = Object.values(D.review).filter(r => r.状态 === "在学" && r.下次到期 && r.下次到期 <= t)
+    .sort((a, b) => a.下次到期 < b.下次到期 ? -1 : a.下次到期 > b.下次到期 ? 1 : (a.id < b.id ? -1 : 1));
+  return due.slice(0, Math.max(0, MAX_REVIEW_PER_DAY - reviewedToday()));
+}
+
+/* ---------- 给读者自己的 AI 的提示词 ---------- */
+const RULES = "规则：按评分要点打 0–10 分，7 分及以上算过；先说我答对了什么，再说漏了什么、哪里说错了；只补我没答到的那一块，不超过 150 字，尽量用题目里的例子；不要给任何买卖股票的建议。批改完再追问我一个问题，看我是不是真懂了。";
+function gradePrompt(o) {
+  return ["你是一位价值投资课的考官，请批改我下面这道题的回答。", RULES, "",
+    "题目：" + o.text, "评分要点：" + o.key, o.errors ? "常见错误：" + o.errors : "", "", "我的回答：", o.answer || "（我还没写）"].filter(x => x !== null).join("\n");
+}
+function lessonPrompt(L) {
+  const qs = L.questions.map((q, i) => [
+    "【第 " + (i + 1) + " 题 · " + q.title + (q.optional ? "（选做）" : "") + "】",
+    q.primer ? "讲解：" + q.primer.p.join(" ") : "讲解：这题不用新知识，用前面的内容推一推。",
+    "题目：" + q.text, "评分要点（不要提前告诉我）：" + q.key, q.errors ? "常见错误：" + q.errors : ""
+  ].filter(Boolean).join("\n")).join("\n\n");
+  return [
+    "请你当我的价值投资课考官，带我上这节课：第 " + L.num + " 课「" + L.title + "」。",
+    "上课方式：",
+    "1. 按顺序一题一题来。每题先用自己的话把「讲解」讲给我听，三四句就够，然后出题，停下来等我回答。",
+    "2. 我答完后，按评分要点打 0–10 分（7 分算过），说我答对了什么、漏了什么、哪里说错了，只补我没答到的那一块，不超过 150 字。没到 7 分，就换个角度让我再答一次。",
+    "3. 一次只讲一题、问一题，不要一次全倒给我，不要提前说评分要点。",
+    "4. 不给任何买卖股票的建议。",
+    "5. 全部题目结束后，给我一页速查表，再用下面的自测题考我，并提醒我隔 1、3、7、21 天各复习一次。",
+    "", "本课材料：", qs, "",
+    "速查表要点：" + L.cheat.one + " " + L.cheat.concepts.join("；"),
+    "自测题：" + L.selftest.map((s, i) => (i + 1) + ". " + s.q + "（要点：" + s.key + "）").join(" "),
+    "", "准备好了就从第 1 题的讲解开始。"
+  ].join("\n");
+}
+async function copyText(text) {
+  try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; } } catch (e) {}
+  try {
+    const t = document.createElement("textarea"); t.value = text; t.setAttribute("readonly", ""); t.style.position = "fixed"; t.style.top = "-1000px";
+    document.body.appendChild(t); t.select(); t.setSelectionRange(0, text.length); const ok = document.execCommand("copy"); t.remove(); return ok;
+  } catch (e) { return false; }
+}
+
+/* ---------- 画面 ---------- */
+function ta(id, ph, cls) { return '<textarea id="' + esc(id) + '" class="' + (cls || "") + '" placeholder="' + esc(ph) + '">' + esc(D.drafts[id] || "") + "</textarea>"; }
+function renderTabs() {
+  const due = reviewQueue().length;
+  return LESSONS.map(L => {
+    const st = lessonDone(L) ? "已完成" : !unlocked(L) ? "第 " + lessonOf(L.after).num + " 课后开" : L.questions.some(q => att(q.id)) ? "进行中" : "没开始";
+    return '<button class="tab' + (V.lessonId === L.id ? " on" : "") + '" data-act="tab" data-id="' + esc(L.id) + '">第 ' + esc(L.num) + " 课<small>" + esc(st) + "</small></button>";
+  }).join("") + (due ? '<span class="due">今天先复习 ' + due + " 题</span>" : "");
+}
+function promptBlock(pid, text, label) {
+  const shown = V.showPrompt[pid];
+  return '<div class="row"><button class="btn primary" data-act="copy" data-id="' + esc(pid) + '">' + esc(label) + "</button>" +
+    (V.copied[pid] === true ? '<span class="ok-msg">已复制，去你的 AI 里粘贴</span>' : V.copied[pid] === false ? '<span class="msg">没复制上，长按下面的文字全选复制</span>' : "") + "</div>" +
+    (shown ? '<textarea class="prompt" readonly id="pr-' + esc(pid) + '">' + esc(text) + "</textarea>" : "");
+}
+function scoreButtons(target) {
+  const opts = [[9, "全答到了"], [7, "大部分答到"], [5, "答到一半"], [3, "基本没答到"]];
+  return '<div class="scores">' + opts.map(([n, t]) => '<button class="btn" data-act="score" data-id="' + esc(target) + '" data-n="' + n + '"><b>' + n + " 分</b><span>" + t + "</span></button>").join("") + "</div>" +
+    '<p class="hint">AI 给了别的分数，就选最接近的那个。7 分算过。</p>';
+}
+function checkPanel(id, q, answerText) {
+  return '<div class="panel"><h3>批改：二选一</h3>' +
+    '<p class="hint">一、复制下面的考官提示词（已经带上你的回答），粘到你常用的 AI 里，它会打分、指出漏了什么，还会追问你。</p>' +
+    promptBlock("g-" + id, gradePrompt({ text: q.text, key: q.key, errors: q.errors, answer: answerText }), "复制考官提示词") +
+    '<details class="mine"><summary>二、自己对照评分要点打分</summary><div class="key" style="margin-top:.6rem"><dl style="margin:0;display:grid;gap:.5rem"><div><dt>评分要点</dt><dd>' + esc(q.key) + "</dd></div>" +
+    (q.errors ? "<div><dt>常见错误</dt><dd>" + esc(q.errors) + "</dd></div>" : "") + "</dl></div></details>" +
+    '<p class="field-label">这题你得几分？</p>' + scoreButtons(id) + "</div>";
+}
+function primerCard(q, i) {
+  return '<article class="card"><div class="card-head"><span class="qno">第 ' + (i + 1) + ' 题之前 · 先学两分钟</span></div><h2 class="qtitle">' + esc(q.primer.t) + "</h2>" +
+    q.primer.p.map(x => "<p>" + esc(x) + "</p>").join("") +
+    '<div class="row"><button class="btn primary" data-act="read" data-id="' + esc(q.id) + '">读完了，开始答</button></div></article>';
+}
+function gradeHtml(n) {
+  const pass = n >= PASS;
+  return '<div class="grade ' + (pass ? "pass" : "fail") + '"><span class="score">' + esc(n) + '</span><span class="hint">/ 10</span><span class="verdict">' + (pass ? "过" : "没过") + "</span></div>";
+}
+function questionCard(L, i) {
+  const q = L.questions[i]; const st = qStatus(q); const la = lastAnswer(q.id);
+  if (st === "todo" && q.primer && !D.read[q.id] && !V.revising[q.id]) return primerCard(q, i);
+  let h = '<article class="card"><div class="card-head"><span class="qno">第 ' + (i + 1) + " 题 · " + esc(q.kind) + "</span>" + (q.optional ? '<span class="chip">选做</span>' : "") + "</div>" +
+    (q.primer ? '<details class="mine"><summary>回看讲解：' + esc(q.primer.t) + "</summary>" + q.primer.p.map(x => "<p>" + esc(x) + "</p>").join("") + "</details>" : "") +
+    '<h2 class="qtitle">' + esc(q.title) + '</h2><p class="qtext">' + esc(q.text) + "</p>" + (q.hint && st === "todo" ? '<p class="hint">' + esc(q.hint) + "</p>" : "");
+  if (st === "todo" || V.revising[q.id]) {
+    h += ta("ans-" + q.id, "用自己的话答，几句话就行。先别查资料。") +
+      '<div class="row"><button class="btn primary" data-act="submit" data-id="' + esc(q.id) + '">交卷</button>' +
+      (V.revising[q.id] ? '<button class="btn" data-act="cancel-revise" data-id="' + esc(q.id) + '">不改了</button>' : "") +
+      (q.optional && st === "todo" ? '<button class="btn" data-act="skip-opt" data-id="' + esc(q.id) + '">跳过，去收尾</button>' : "") + "</div>";
+  } else if (st === "pending") {
+    h += '<details class="mine" open><summary>你的回答</summary><p>' + esc(la.text) + "</p></details>" + checkPanel(q.id, q, la.text) +
+      '<div class="row"><button class="btn small" data-act="revise" data-id="' + esc(q.id) + '">改一改回答</button></div>';
+  } else {
+    const n = la.score; const f = firstScore(q.id);
+    h += '<details class="mine"><summary>你的回答</summary><p>' + esc(la.text) + "</p></details>" + gradeHtml(n) +
+      (f !== null && f !== n ? '<p class="hint">首答 ' + esc(f) + " 分，算成绩和排复习用首答。</p>" : "") +
+      '<div class="row"><button class="btn primary" data-act="next">下一题</button><button class="btn" data-act="revise" data-id="' + esc(q.id) + '">再答一次</button></div>' +
+      '<details class="mine"' + (V.copied["g-" + q.id] !== undefined ? " open" : "") + '><summary>还想让 AI 再讲讲</summary><div style="margin-top:.6rem">' + promptBlock("g-" + q.id, gradePrompt({ text: q.text, key: q.key, errors: q.errors, answer: la.text }), "复制考官提示词") + "</div></details>";
+  }
+  if (V.msg[q.id]) h += '<p class="msg">' + esc(V.msg[q.id]) + "</p>";
+  return h + "</article>";
+}
+function reviewCard(item, n) {
+  const key = "rv-" + item.id; const shown = V.rvShown === item.id;
+  let h = '<article class="card"><div class="card-head"><span class="qno">复习 · 今天还有 ' + n + ' 题</span><span class="chip">第 ' + esc(item.课) + " 课</span></div><p class=\"qtext\">" + esc(item.题) + "</p>";
+  if (!shown) h += ta(key, "凭记忆答，别翻速查表。") + '<div class="row"><button class="btn primary" data-act="rv-submit" data-id="' + esc(item.id) + '">交卷</button></div>';
+  else {
+    const ans = D.drafts[key] || "";
+    h += '<details class="mine" open><summary>你的回答</summary><p>' + esc(ans) + "</p></details>" +
+      '<div class="panel"><h3>批改：二选一</h3>' + promptBlock("r-" + item.id, gradePrompt({ text: item.题, key: item.要点, answer: ans }), "复制考官提示词") +
+      '<details class="mine"><summary>自己对照要点打分</summary><div class="key" style="margin-top:.6rem"><p>' + esc(item.要点) + "</p></div></details>" +
+      '<p class="field-label">这题你得几分？</p>' + scoreButtons("rv:" + item.id) + "</div>";
+  }
+  return h + "</article>";
+}
+function closeCard(L) {
+  const sum = summaryOf(L);
+  let h = '<article class="card"><div class="card-head"><span class="qno">收尾</span></div><h2 class="qtitle">这节课答完了</h2><ul class="summary">' +
+    sum.req.map(q => "<li><span>第 " + (q.order + 1) + " 题 · " + esc(q.title) + "</span><b>" + (firstScore(q.id) !== null ? firstScore(q.id) + " 分" : "没打分") + "</b></li>").join("") +
+    "</ul><p>" + (sum.avg === null ? "" : "平均 " + (Math.round(sum.avg * 10) / 10) + " 分，" + (sum.passed ? "过了。" : "没过，没到 7 分的题明天复习时再考。")) + "</p>" +
+    '<label class="field-label" for="note-fp-' + esc(L.id) + '">复盘：今天哪个说法，你原来以为对，其实是错的？</label>' + ta("note-fp-" + L.id, "一两句就行。", "short");
+  if (L.bigPicture) h += '<label class="field-label" for="note-big-' + esc(L.id) + '">画一张大图（不打分）：不看资料，用自己的话说，价值投资从「要不要买一家公司」到「什么时候卖」，要依次回答哪几个问题？</label>' + ta("note-big-" + L.id, "想到几步写几步，留作以后对照。");
+  return h + '<div class="row"><button class="btn primary" data-act="close" data-id="' + esc(L.id) + '">收尾，排进复习</button></div><p class="hint">收尾后出速查表，' + L.selftest.length + " 道自测题和没过的题明天开始复习。</p></article>";
+}
+function doneView(L) {
+  const sum = summaryOf(L); const c = L.cheat; const li = xs => xs.map(x => "<li>" + esc(x) + "</li>").join("");
+  const next = LESSONS[LESSONS.indexOf(L) + 1];
+  return '<article class="card"><div class="card-head"><span class="qno">已完成 · ' + esc(D.done[L.id].at || "") + "</span></div><p>" +
+    (sum.avg === null ? "" : "平均 " + (Math.round(sum.avg * 10) / 10) + " 分，" + (sum.passed ? "过了。" : "没过，没到 7 分的题在复习里再考。")) + "点上面的数字可以回看每一题。</p>" +
+    (next ? '<div class="row"><button class="btn primary" data-act="tab" data-id="' + esc(next.id) + '">去第 ' + esc(next.num) + " 课</button></div>" : '<p class="hint">后面的课做好一节上线一节。</p>') + "</article>" +
+    '<article class="card cheat"><h2>速查表</h2><p class="one">' + esc(c.one) + "</p><h3>核心概念</h3><ul>" + li(c.concepts) + "</ul><h3>常见错误</h3><ul>" + li(c.mistakes) +
+    "</ul><h3>用之前查一遍</h3><ul>" + li(c.checklist) + "</ul><h3>自测题（已排进复习）</h3><ol>" + li(L.selftest.map(s => s.q)) + "</ol></article>";
+}
+function render() {
+  const ae = document.activeElement; const keep = ae && ae.tagName === "TEXTAREA" && ae.id ? ae.id : null;
+  document.getElementById("tabs").innerHTML = renderTabs();
+  const L = lessonOf(V.lessonId); const queue = reviewQueue(); let h = "";
+  if (queue.length) h = '<section class="lesson-head"><p class="eyebrow">复习</p><h1>先考旧题</h1><p class="lead">每次打开先考到期的旧题，一次一题。答对了隔得越来越久再考，答错了明天再来。</p></section>' + reviewCard(queue[0], queue.length);
+  else if (!unlocked(L)) {
+    const pre = lessonOf(L.after);
+    h = '<section class="lesson-head"><p class="eyebrow">第 ' + esc(L.num) + " 课 · " + esc(L.tag) + "</p><h1>" + esc(L.title) + '</h1><p class="lead">' + esc(L.lead) + '</p></section><article class="card"><p>这节课在第 ' + esc(pre.num) + ' 课收尾之后开。</p><div class="row"><button class="btn primary" data-act="tab" data-id="' + esc(pre.id) + '">回第 ' + esc(pre.num) + " 课</button></div></article>";
+  } else {
+    const auto = nextIndex(L); const cur = V.pick !== null ? V.pick : (lessonDone(L) ? null : auto);
+    h = '<section class="lesson-head"><p class="eyebrow">第 ' + esc(L.num) + " 课 · " + esc(L.tag) + "</p><h1>" + esc(L.title) + '</h1><p class="lead">' + esc(L.lead) + "</p>" +
+      '<details class="mine"' + (V.copied["lesson-" + L.id] !== undefined ? " open" : "") + '><summary>想让你自己的 AI 从头带你上这节课？</summary><div style="margin-top:.6rem;display:flex;flex-direction:column;gap:.6rem"><p class="hint">复制下面这段，粘到 ChatGPT、Claude、豆包、DeepSeek 或 Kimi 里，它会一题一题讲、一题一题考。也可以就在这页上答。</p>' +
+      promptBlock("lesson-" + L.id, lessonPrompt(L), "复制整节课的考官提示词") + "</div></details>" +
+      '<div class="dots" role="group" aria-label="本课题目">' +
+      L.questions.map((q, i) => { const st = qStatus(q); const f = firstScore(q.id); const cls = "dot" + (f !== null ? (f >= PASS ? " pass" : " fail") : st === "pending" ? " pending" : "") + (i === cur ? " cur" : "");
+        return '<button class="' + cls + '" data-act="pick" data-i="' + i + '" aria-label="第 ' + (i + 1) + ' 题">' + (i + 1) + "</button>"; }).join("") +
+      '<button class="dot' + (cur === "close" || cur === null ? " cur" : "") + '" data-act="pick" data-i="end">' + (lessonDone(L) ? "速查" : "收尾") + "</button></div></section>";
+    if (typeof cur === "number") h += questionCard(L, cur);
+    else if (lessonDone(L)) h += doneView(L);
+    else h += closeCard(L);
+  }
+  document.getElementById("stage").innerHTML = h;
+  if (keep) { const el = document.getElementById(keep); if (el) el.focus(); }
+}
+function record(target, n) {
+  if (target.startsWith("rv:")) {
+    const id = target.slice(3); const r = D.review[id]; if (!r) return;
+    const passed = n >= PASS; r.记录 = (r.记录 || []).concat([{ 日期: today(), 分: n, 档: r.档 }]);
+    if (passed && r.档 === GAPS.length - 1) { r.状态 = "毕业"; r.下次到期 = null; }
+    else { r.档 = passed ? r.档 + 1 : 0; r.下次到期 = addDays(today(), GAPS[r.档]); }
+    delete D.drafts["rv-" + id]; V.rvShown = null;
+  } else {
+    const la = lastAnswer(target); if (!la) return; la.score = n; la.scoredAt = new Date().toISOString();
+  }
+  save(true); render(); window.scrollTo({ top: 0 });
+}
+document.addEventListener("click", async ev => {
+  const b = ev.target.closest("[data-act]"); if (!b) return;
+  const act = b.dataset.act, id = b.dataset.id; const L = lessonOf(V.lessonId);
+  if (act === "tab") { V.lessonId = id; V.pick = null; history.replaceState(null, "", "#" + id); render(); window.scrollTo({ top: 0 }); }
+  else if (act === "pick") { V.pick = b.dataset.i === "end" ? null : Number(b.dataset.i); render(); }
+  else if (act === "read") { D.read[id] = true; save(); render(); window.scrollTo({ top: 0 }); }
+  else if (act === "submit") {
+    const el = document.getElementById("ans-" + id); const text = ((el && el.value) || "").trim();
+    if (!text) { V.msg[id] = "先写几句再交。"; render(); return; }
+    V.msg[id] = ""; const a = D.attempts[id] || { answers: [] }; a.answers.push({ text, at: new Date().toISOString() }); D.attempts[id] = a;
+    delete D.drafts["ans-" + id]; V.revising[id] = false; V.pick = BYID[id].order; save(true); render();
+  }
+  else if (act === "rv-submit") {
+    const el = document.getElementById("rv-" + id); const text = ((el && el.value) || "").trim();
+    if (!text) return; D.drafts["rv-" + id] = text; V.rvShown = id; save(true); render();
+  }
+  else if (act === "score") record(id, Number(b.dataset.n));
+  else if (act === "copy") {
+    let text = "";
+    if (id.startsWith("lesson-")) text = lessonPrompt(lessonOf(id.slice(7)));
+    else if (id.startsWith("g-")) { const q = BYID[id.slice(2)]; const la = lastAnswer(q.id); text = gradePrompt({ text: q.text, key: q.key, errors: q.errors, answer: la ? la.text : "" }); }
+    else if (id.startsWith("r-")) { const r = D.review[id.slice(2)]; text = gradePrompt({ text: r.题, key: r.要点, answer: D.drafts["rv-" + r.id] || "" }); }
+    const ok = await copyText(text); V.copied[id] = ok; V.showPrompt[id] = !ok || V.showPrompt[id]; render();
+    if (!ok) { const t = document.getElementById("pr-" + id); if (t) { t.focus(); t.select(); } }
+  }
+  else if (act === "next") { V.pick = null; render(); window.scrollTo({ top: 0 }); }
+  else if (act === "revise") { V.revising[id] = true; if (!D.drafts["ans-" + id]) { const la = lastAnswer(id); if (la) D.drafts["ans-" + id] = la.text; } render(); }
+  else if (act === "cancel-revise") { V.revising[id] = false; render(); }
+  else if (act === "skip-opt") { D.attempts[id] = { answers: [], skipped: true }; save(true); V.pick = null; render(); }
+  else if (act === "close") {
+    const v = k => ((document.getElementById(k) || {}).value || "").trim();
+    D.notes[id] = { 复盘: v("note-fp-" + id), 大图: v("note-big-" + id) };
+    const Lc = lessonOf(id); const tom = addDays(today(), 1);
+    const items = Lc.selftest.map(s => ({ id: s.id, 课: Lc.num, 题: s.q, 要点: s.key }));
+    Lc.questions.filter(q => !q.optional && firstScore(q.id) !== null && firstScore(q.id) < PASS).forEach(q => items.push({ id: q.id, 课: Lc.num, 题: q.text, 要点: q.key }));
+    items.forEach(it => { if (!D.review[it.id]) D.review[it.id] = Object.assign(it, { 档: 0, 下次到期: tom, 状态: "在学", 记录: [] }); });
+    D.done[id] = { at: today() }; delete D.drafts["note-fp-" + id]; delete D.drafts["note-big-" + id];
+    save(true); V.pick = null; render(); window.scrollTo({ top: 0 });
+  }
+  else if (act === "reset") {
+    if (b.dataset.armed) { D = blank(); save(true); V.pick = null; b.textContent = "清空我的记录"; delete b.dataset.armed; render(); }
+    else { b.dataset.armed = "1"; b.textContent = "再点一次确认清空"; setTimeout(() => { if (b.dataset.armed) { delete b.dataset.armed; b.textContent = "清空我的记录"; } }, 4000); }
+  }
+});
+document.addEventListener("input", ev => { const t = ev.target; if (t.tagName === "TEXTAREA" && t.id && !t.readOnly) { D.drafts[t.id] = t.value; save(); } });
+render();
+})();
+</script>
+</body>
+</html>
